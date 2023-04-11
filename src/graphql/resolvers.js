@@ -1,4 +1,5 @@
 import { UserModel, BankAccountModel } from "../models/index.js";
+import axios from "axios";
 import { paystackTestSecret } from "../../config/config.js";
 import { levenshteinDistance } from "../utils/index.js";
 
@@ -11,10 +12,13 @@ export const resolvers = {
       return await UserModel.findById(id);
     },
     async getUsers(_parent, _args) {
-      return await UserModel.find();
+      const users = await UserModel.find();
+      return users;
     },
-    async getUsers(_parent, { user_id }) {
-      return await BankAccountModel.findOne({ user_id });
+    async getAccount(_parent, { user_id }) {
+      return await BankAccountModel.findOne({
+        user: user_id,
+      }).populate("user");
     },
     async getBanks(_parent, _args) {
       try {

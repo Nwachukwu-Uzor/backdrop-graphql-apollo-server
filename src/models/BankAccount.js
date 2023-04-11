@@ -18,7 +18,7 @@ const bankAccountSchema = new Schema({
     type: String,
     required: true,
   },
-  user_id: {
+  user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
     unique: true,

@@ -11,7 +11,7 @@ export const typeDefs = `#graphql
         user_account_number: String
         user_bank_code: String 
         user_bank_id: String
-        user:  UserType
+        user: UserType   
     }
 
     type BankType {
@@ -23,16 +23,16 @@ export const typeDefs = `#graphql
         currency: String
         country: String 
         type: String
-        createdAt: GraphQLString
-        updatedAt: GraphQLString
+        createdAt: String
+        updatedAt: String
     }
 
     type Query {
         getUser(ID: ID!): UserType
-        getUsers(): [UserType]
+        getUsers: [UserType]
         # getUsers(count: Int! page: Int!): [UserType]
-        getAccount(user_id: ID!): AccountType
-        getBanks(): [BankType]
+        getAccount(user_id: ID!): BankAccountType
+        getBanks: [BankType]
     }
 
     type Mutation {
@@ -44,8 +44,7 @@ export const typeDefs = `#graphql
             user_account_name: String! 
             user_account_number: String!
             user_bank_code: String!
-            user_bank_id: String!
             user_id: String!
-        ): AccountType
+        ): BankAccountType
     }
 `;
