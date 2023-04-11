@@ -1,0 +1,31 @@
+{
+  "name": "backdrop-graphql-apollo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nwachukwu-Uzor/backdrop-graphql-apollo-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nwachukwu-Uzor/backdrop-graphql-apollo-server/issues"
+  },
+  "homepage": "https://github.com/Nwachukwu-Uzor/backdrop-graphql-apollo-server#readme",
+  "dependencies": {
+    "@apollo/server": "^4.6.0",
+    "apollo-server": "^3.12.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "graphql": "^16.6.0",
+    "mongoose": "^7.0.3",
+    "nodemon": "^2.0.22"
+  }
+}
