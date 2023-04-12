@@ -15,10 +15,6 @@ const app = express();
 
 connectDB();
 
-app.use("/health-check", (req, res) =>
-  res.statusCode(200).json({ message: "Application is running fine" })
-);
-
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
   typeDefs,
@@ -33,6 +29,11 @@ app.use(
   cors(),
   express.json(),
   expressMiddleware(server, { context: auth })
+);
+
+app.use(express.urlencoded({ extended: true }));
+app.get("/health-check", (req, res) =>
+  res.status(200).json({ message: "Application is running fine" })
 );
 
 await new Promise((resolve) => httpServer.listen({ port }, resolve));
