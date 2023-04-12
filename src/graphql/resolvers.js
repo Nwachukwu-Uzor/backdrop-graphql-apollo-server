@@ -1,6 +1,13 @@
-import { UserModel, BankAccountModel } from "../models/index.js";
+import { GraphQLError } from "graphql";
 import axios from "axios";
-import { paystackTestSecret } from "../../config/config.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { UserModel, BankAccountModel } from "../models/index.js";
+import {
+  paystackTestSecret,
+  tokenIssuer,
+  tokenSecret,
+} from "../../config/config.js";
 import { levenshteinDistance } from "../utils/index.js";
 
 const PAYSTACK_AUTHORIZATION_HEADER = `Bearer ${paystackTestSecret}`;
@@ -20,7 +27,8 @@ export const resolvers = {
         user: user_id,
       }).populate("user");
     },
-    async getBanks(_parent, _args) {
+    async getBanks(_parent, _args, contextValue) {
+      console.log(contextValue);
       try {
         const response = await axios.get("https://api.paystack.co/bank", {
           headers: {
@@ -102,6 +110,43 @@ export const resolvers = {
           );
         }
         throw new Error(`Something went wrong: ${error?.message}`);
+      }
+    },
+    async loginUser(_, { email, password }) {
+      try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+          throw new Error("Login Failed: Username or Password incorrect");
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(
+          password,
+          user?.password
+        );
+
+        if (!isPasswordCorrect) {
+          throw new Error("Login Failed: Username or Password incorrect");
+        }
+
+        const token = jwt.sign(
+          {
+            user_id: user._id,
+            email: user._doc.email,
+            phone: user._doc.phone,
+          },
+          tokenSecret,
+          { issuer: tokenIssuer, expiresIn: "2h" }
+        );
+
+        return {
+          user: {
+            id: user._id,
+            ...user._doc,
+          },
+          token,
+        };
+      } catch (error) {
+        throw new Error(error?.message);
       }
     },
   },

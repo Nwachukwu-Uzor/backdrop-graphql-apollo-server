@@ -27,6 +27,11 @@ export const typeDefs = `#graphql
         updatedAt: String
     }
 
+    type LoginResponseType {
+        token: String!
+        user: UserType
+    }
+
     type Query {
         getUser(ID: ID!): UserType
         getUsers: [UserType]
@@ -46,5 +51,7 @@ export const typeDefs = `#graphql
             user_bank_code: String!
             user_id: String!
         ): BankAccountType
+
+        loginUser(email: String! password: String!): LoginResponseType
     }
 `;
