@@ -15,6 +15,10 @@ const app = express();
 
 connectDB();
 
+app.use("/health-check", (req, res) =>
+  res.statusCode(200).json({ message: "Application is running fine" })
+);
+
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
   typeDefs,
